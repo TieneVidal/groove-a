@@ -46,7 +46,7 @@ function PedidosPage() {
 
   async function load() {
     const { data } = await supabase.from("orders").select("*").order("created_at", { ascending: false }).limit(100);
-    const list = (data as Order[]) ?? [];
+    const list = (data as unknown as Order[]) ?? [];
     list.forEach((o) => knownIds.current.add(o.id));
     setOrders(list);
     const ids = Array.from(new Set(list.map((o) => o.customer_id).filter(Boolean))) as string[];
