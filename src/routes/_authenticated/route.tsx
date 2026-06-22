@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, redirect, Link, useNavigate } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
-import { ShoppingBag, MessageSquare, Menu as MenuIcon, Settings, LogOut, Bot } from "lucide-react";
+import { ShoppingBag, MessageSquare, Menu as MenuIcon, Settings, LogOut, Bot, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -29,6 +29,7 @@ function AuthedLayout() {
     { to: "/pedidos", label: "Pedidos", icon: ShoppingBag },
     { to: "/conversas", label: "Conversas", icon: MessageSquare },
     { to: "/cardapio", label: "Cardápio", icon: MenuIcon },
+    { to: "/whatsapp", label: "WhatsApp", icon: Smartphone },
     { to: "/configuracoes", label: "Configurações", icon: Settings },
   ] as const;
 
