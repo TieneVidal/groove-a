@@ -89,6 +89,7 @@ export const Route = createFileRoute("/api/public/whatsapp/$instance")({
           }).select("*").single();
           conv = nconv;
         }
+        if (!conv) return new Response("conv error", { status: 500 });
 
         if (conv.bot_paused || conv.status === "aguardando_humano") {
           return Response.json({ ok: true, paused: true });

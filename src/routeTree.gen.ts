@@ -12,10 +12,12 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedWhatsappRouteImport } from './routes/_authenticated/whatsapp'
 import { Route as AuthenticatedPedidosRouteImport } from './routes/_authenticated/pedidos'
 import { Route as AuthenticatedConversasRouteImport } from './routes/_authenticated/conversas'
 import { Route as AuthenticatedConfiguracoesRouteImport } from './routes/_authenticated/configuracoes'
 import { Route as AuthenticatedCardapioRouteImport } from './routes/_authenticated/cardapio'
+import { Route as ApiPublicWhatsappInstanceRouteImport } from './routes/api/public/whatsapp.$instance'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -30,6 +32,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedWhatsappRoute = AuthenticatedWhatsappRouteImport.update({
+  id: '/whatsapp',
+  path: '/whatsapp',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedPedidosRoute = AuthenticatedPedidosRouteImport.update({
   id: '/pedidos',
@@ -52,6 +59,12 @@ const AuthenticatedCardapioRoute = AuthenticatedCardapioRouteImport.update({
   path: '/cardapio',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiPublicWhatsappInstanceRoute =
+  ApiPublicWhatsappInstanceRouteImport.update({
+    id: '/api/public/whatsapp/$instance',
+    path: '/api/public/whatsapp/$instance',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -60,6 +73,8 @@ export interface FileRoutesByFullPath {
   '/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/conversas': typeof AuthenticatedConversasRoute
   '/pedidos': typeof AuthenticatedPedidosRoute
+  '/whatsapp': typeof AuthenticatedWhatsappRoute
+  '/api/public/whatsapp/$instance': typeof ApiPublicWhatsappInstanceRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -68,6 +83,8 @@ export interface FileRoutesByTo {
   '/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/conversas': typeof AuthenticatedConversasRoute
   '/pedidos': typeof AuthenticatedPedidosRoute
+  '/whatsapp': typeof AuthenticatedWhatsappRoute
+  '/api/public/whatsapp/$instance': typeof ApiPublicWhatsappInstanceRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -78,6 +95,8 @@ export interface FileRoutesById {
   '/_authenticated/configuracoes': typeof AuthenticatedConfiguracoesRoute
   '/_authenticated/conversas': typeof AuthenticatedConversasRoute
   '/_authenticated/pedidos': typeof AuthenticatedPedidosRoute
+  '/_authenticated/whatsapp': typeof AuthenticatedWhatsappRoute
+  '/api/public/whatsapp/$instance': typeof ApiPublicWhatsappInstanceRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -88,8 +107,18 @@ export interface FileRouteTypes {
     | '/configuracoes'
     | '/conversas'
     | '/pedidos'
+    | '/whatsapp'
+    | '/api/public/whatsapp/$instance'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/cardapio' | '/configuracoes' | '/conversas' | '/pedidos'
+  to:
+    | '/'
+    | '/auth'
+    | '/cardapio'
+    | '/configuracoes'
+    | '/conversas'
+    | '/pedidos'
+    | '/whatsapp'
+    | '/api/public/whatsapp/$instance'
   id:
     | '__root__'
     | '/'
@@ -99,12 +128,15 @@ export interface FileRouteTypes {
     | '/_authenticated/configuracoes'
     | '/_authenticated/conversas'
     | '/_authenticated/pedidos'
+    | '/_authenticated/whatsapp'
+    | '/api/public/whatsapp/$instance'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ApiPublicWhatsappInstanceRoute: typeof ApiPublicWhatsappInstanceRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -129,6 +161,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/whatsapp': {
+      id: '/_authenticated/whatsapp'
+      path: '/whatsapp'
+      fullPath: '/whatsapp'
+      preLoaderRoute: typeof AuthenticatedWhatsappRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/pedidos': {
       id: '/_authenticated/pedidos'
@@ -158,6 +197,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCardapioRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/whatsapp/$instance': {
+      id: '/api/public/whatsapp/$instance'
+      path: '/api/public/whatsapp/$instance'
+      fullPath: '/api/public/whatsapp/$instance'
+      preLoaderRoute: typeof ApiPublicWhatsappInstanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -166,6 +212,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedConfiguracoesRoute: typeof AuthenticatedConfiguracoesRoute
   AuthenticatedConversasRoute: typeof AuthenticatedConversasRoute
   AuthenticatedPedidosRoute: typeof AuthenticatedPedidosRoute
+  AuthenticatedWhatsappRoute: typeof AuthenticatedWhatsappRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -173,6 +220,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedConfiguracoesRoute: AuthenticatedConfiguracoesRoute,
   AuthenticatedConversasRoute: AuthenticatedConversasRoute,
   AuthenticatedPedidosRoute: AuthenticatedPedidosRoute,
+  AuthenticatedWhatsappRoute: AuthenticatedWhatsappRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -182,6 +230,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  ApiPublicWhatsappInstanceRoute: ApiPublicWhatsappInstanceRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
