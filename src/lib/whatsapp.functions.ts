@@ -63,9 +63,10 @@ export const connectWhatsapp = createServerFn({ method: "POST" })
     const headers = { "Content-Type": "application/json", apikey: inst.evolution_api_key };
     const base = inst.evolution_url;
 
-    // URL pública do webhook (Lovable preview ou prod)
-    const publicHost = process.env.LOVABLE_PUBLIC_URL || process.env.PUBLIC_URL;
-    const webhookUrl = `${publicHost ?? ""}/api/public/whatsapp/${inst.instance_name}?token=${inst.webhook_token}`;
+    // URL pública do webhook (deriva do request)
+    const req = getRequest();
+    const origin = new URL(req.url).origin;
+    const webhookUrl = `${origin}/api/public/whatsapp/${inst.instance_name}?token=${inst.webhook_token}`;
 
     // 1. cria instância (idempotente — ignora se já existir)
     await fetch(`${base}/instance/create`, {
